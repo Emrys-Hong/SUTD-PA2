@@ -30,7 +30,9 @@ public class ServerProtocol {
     private static Cipher cipher;
     private static Cipher fdcipher;
 
-    private static String privatePath = "privateSe.der";
+
+    /***************** CHANGE THESE VARIABLES *********************/
+    private static String privatePath = "/Users/emrys/Github/school/PA2-SUTD/keys/privateServer.der";
 
     public ServerProtocol(String server) throws IOException {
         this.server = new FileInputStream(server);

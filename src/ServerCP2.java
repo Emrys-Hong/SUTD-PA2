@@ -19,8 +19,14 @@ public class ServerCP2 {
         BufferedReader inputReader = null;
         PrintWriter out = null;
 
+
+        /**************** CHANGE THESE VARIABLES ****************/
+        int PORTNUMBER = 4321;
+        String SERVERCRT = "server.crt";
+        String OUTPUT_FOLDER = "../recv/CP2_";
+
         try {
-            welcomeSocket = new ServerSocket(4321);
+            welcomeSocket = new ServerSocket(PORTNUMBER);
 
             // Prints IP
             System.out.println("Server IP: " + welcomeSocket.getInetAddress().getLocalHost().getHostAddress());
@@ -45,7 +51,7 @@ public class ServerCP2 {
             }
 
             // Set up protocol
-            ServerProtocol serverProtocol = new ServerProtocol("server.crt");
+            ServerProtocol serverProtocol = new ServerProtocol(SERVERCRT);
 
             // Get nonce from client
             System.out.println("Getting nonce from client...");
@@ -129,7 +135,7 @@ public class ServerCP2 {
                     byte[] result = sessionCipher.doFinal(encryptedFileBytes);
                     //byte[] result = serverProtocol.decryptBytesWithSessionKey(sessionCipher, encryptedFileBytes);
 
-                    FileOutputStream file = new FileOutputStream("recv/CP2_" + filename); //creating output file
+                    FileOutputStream file = new FileOutputStream(OUTPUT_FOLDER + filename); //creating output file
                     file.write(result);
                     file.close();
 

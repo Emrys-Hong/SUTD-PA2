@@ -20,10 +20,10 @@ public class ClientCP1 {
 
 
         /*****************CHANGE THESE VARIABLES****************/
-        String filename = "../rr.txt";
+        String filename = "/Users/emrys/Github/school/PA2-SUTD/input/smallest.txt";
         String serverIP = "localhost";
         int serverPort = 4321;
-
+        String CACERT = "/Users/emrys/Github/school/PA2-SUTD/keys/cacse.crt";
 
 
 
@@ -41,7 +41,7 @@ public class ClientCP1 {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             // Set up protocol
-            ClientProtocol clientProtocol = new ClientProtocol("CA.crt");
+            ClientProtocol clientProtocol = new ClientProtocol(CACERT);
 
             out.println("Requesting authentication...");
             System.out.println("Requesting authentication...");
@@ -51,8 +51,12 @@ public class ClientCP1 {
             clientProtocol.generateNonce();
 
             // Send nonce to sever
-            System.out.println("Sending nonce to server...");
+            System.out.println("STEP1: --------Sending nonce to server----------");
             toServer.write(clientProtocol.getNonce());
+            toServer.flush();
+            toServer.flush();
+            toServer.flush();toServer.flush();
+            System.out.println("--------------- STEP1 COMPLETE -----------------");
 
             // Retrieve encrypted nonce from server
             fromServer.read(clientProtocol.getEncryptedNonce());

@@ -21,10 +21,10 @@ public class ClientCP2 {
 
 
         /*****************CHANGE THESE VARIABLES****************/
-        String filename = "../rr.txt";
+        String filename = "../input/smallest/rr.txt";
         String serverIP = "localhost";
         int serverPort = 4321;
-
+        String CACERT = "CA.crt";
 
         try {
 
@@ -40,7 +40,7 @@ public class ClientCP2 {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             // Set up protocol
-            ClientProtocol clientProtocol = new ClientProtocol("CA.crt");
+            ClientProtocol clientProtocol = new ClientProtocol(CACERT);
 
             out.println("Requesting authentication...");
             System.out.println("Requesting authentication...");

@@ -18,16 +18,19 @@ public class ServerCP1 {
         PrintWriter out = null;
 
 
+        /**************** CHANGE THESE VARIABLES ****************/
+        int PORTNUMBER = 4321;
+        String SERVERCRT = "/Users/emrys/Github/school/PA2-SUTD/keys/signedCert.crt";
+        String OUTPUT_FOLDER = "../recv/CP2_";
 
 
         try {
-            welcomeSocket = new ServerSocket(4321);
+            welcomeSocket = new ServerSocket(PORTNUMBER);
 
             // Prints IP
             System.out.println("Server IP: " + welcomeSocket.getInetAddress().getLocalHost().getHostAddress());
 
             connectionSocket = welcomeSocket.accept();
-
             fromClient = new DataInputStream(connectionSocket.getInputStream());
             toClient = new DataOutputStream(connectionSocket.getOutputStream());
 
@@ -36,9 +39,10 @@ public class ServerCP1 {
             out = new PrintWriter(connectionSocket.getOutputStream(), true);
 
             while (true){
+                System.out.println("STEP0: ---------- request authentication ---------------");
                 String request = inputReader.readLine();
                 if (request.equals("Requesting authentication...")){
-                    System.out.println("Client: " + request);
+                    System.out.println("----------------- STEP0 COMPLETE --------------------------");
                     break;
                 }
                 else
@@ -46,25 +50,27 @@ public class ServerCP1 {
             }
 
             // Set up protocol
-            ServerProtocol serverProtocol = new ServerProtocol("server.crt");
+            ServerProtocol serverProtocol = new ServerProtocol(SERVERCRT);
 
             // Get nonce from client
-            System.out.println("Getting nonce from client...");
-            fromClient.read(serverProtocol.getNonce());
-            System.out.println("Nonce received");
+            System.out.println("STEP1: ---------- Getting nonce from client ---------------");
+//            fromClient.readFully(serverProtocol.getNonce());
+            System.out.println("----------------- STEP1 COMPLETE --------------------------");
 
             // Encrypt nonce
             System.out.println("Encrypting nonce...");
             serverProtocol.encryptNonce();
 
             // Send nonce to client
-            System.out.println("Sending encrypted nonce to client...");
+            System.out.println("STEP2: --------- Sending encrypted nonce to client --------");
             toClient.write(serverProtocol.getEncryptedNonce());
             toClient.flush();
+            System.out.println("---------------  STEP2 COMPLETE ---------------------------");
 
             // Receive certificate request from client
             while (true){
                 String request = inputReader.readLine();
+                System.out.println(request);
                 if (request.equals("Request certificate...")){
                     System.out.println("Client: " + request);
 
@@ -103,7 +109,7 @@ public class ServerCP1 {
                     byte [] filename = new byte[numBytes];
                     fromClient.read(filename);
 
-                    fileOutputStream = new FileOutputStream("recv/CP1_" + new String(filename, 0, numBytes));
+                    fileOutputStream = new FileOutputStream(OUTPUT_FOLDER + new String(filename, 0, numBytes));
                     bufferedFileOutputStream = new BufferedOutputStream(fileOutputStream);
 
                     // If the packet is for transferring a chunk of the file

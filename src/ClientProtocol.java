@@ -16,12 +16,12 @@ public class ClientProtocol {
     private static X509Certificate ServerCert;
     private static PublicKey CAkey;
     private static PublicKey serverKey;
-
     private static byte[] nonce = new byte[32];
     private static byte[] encryptedNonce = new byte[128];
-
     private static Cipher dcipher;
     private static Cipher fcipher;
+
+
 
     public ClientProtocol(String CA) throws IOException {
         this.CA = new FileInputStream(CA);
