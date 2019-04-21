@@ -43,8 +43,12 @@ public class ClientCP1 {
             // Set up protocol
             ClientProtocol clientProtocol = new ClientProtocol(CACERT);
 
-            out.println("Requesting authentication...");
+            System.out.println("STEP0: ---------- request authentication ---------------");
+//            toServer.write("Requesting authentication...".getBytes());
+            toServer.write("1".getBytes());
+            toServer.flush();
             System.out.println("Requesting authentication...");
+            System.out.println("----------------- STEP0 COMPLETE -----------------------");
 
             // Generate nonce
             System.out.println("Generating nonce...");
@@ -53,9 +57,6 @@ public class ClientCP1 {
             // Send nonce to sever
             System.out.println("STEP1: --------Sending nonce to server----------");
             toServer.write(clientProtocol.getNonce());
-            toServer.flush();
-            toServer.flush();
-            toServer.flush();toServer.flush();
             System.out.println("--------------- STEP1 COMPLETE -----------------");
 
             // Retrieve encrypted nonce from server

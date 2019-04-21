@@ -5,24 +5,21 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerCP1 {
+    static ServerSocket welcomeSocket = null;
+    static Socket connectionSocket = null;
+    static DataOutputStream toClient = null;
+    static DataInputStream fromClient = null;
+    static FileOutputStream fileOutputStream = null;
+    static BufferedOutputStream bufferedFileOutputStream = null;
+    static BufferedReader inputReader = null;
+    static PrintWriter out = null;
+
+    /**************** CHANGE THESE VARIABLES ****************/
+    static int PORTNUMBER = 4321;
+    static String SERVERCRT = "/Users/emrys/Github/school/PA2-SUTD/keys/signedCert.crt";
+    static String OUTPUT_FOLDER = "/Users/emrys/Github/school/PA2-SUTD/recv/";
 
     public static void main(String[] args) {
-
-        ServerSocket welcomeSocket = null;
-        Socket connectionSocket = null;
-        DataOutputStream toClient = null;
-        DataInputStream fromClient = null;
-        FileOutputStream fileOutputStream = null;
-        BufferedOutputStream bufferedFileOutputStream = null;
-        BufferedReader inputReader = null;
-        PrintWriter out = null;
-
-
-        /**************** CHANGE THESE VARIABLES ****************/
-        int PORTNUMBER = 4321;
-        String SERVERCRT = "/Users/emrys/Github/school/PA2-SUTD/keys/signedCert.crt";
-        String OUTPUT_FOLDER = "../recv/CP2_";
-
 
         try {
             welcomeSocket = new ServerSocket(PORTNUMBER);
@@ -40,8 +37,8 @@ public class ServerCP1 {
 
             while (true){
                 System.out.println("STEP0: ---------- request authentication ---------------");
-                String request = inputReader.readLine();
-                if (request.equals("Requesting authentication...")){
+                String request = getMessageFromClient(1);
+                if (request.equals("1")){
                     System.out.println("----------------- STEP0 COMPLETE --------------------------");
                     break;
                 }
@@ -54,7 +51,7 @@ public class ServerCP1 {
 
             // Get nonce from client
             System.out.println("STEP1: ---------- Getting nonce from client ---------------");
-//            fromClient.readFully(serverProtocol.getNonce());
+            fromClient.readFully(serverProtocol.getNonce());
             System.out.println("----------------- STEP1 COMPLETE --------------------------");
 
             // Encrypt nonce
@@ -69,15 +66,17 @@ public class ServerCP1 {
 
             // Receive certificate request from client
             while (true){
+                System.out.println("STEP3: -------- receive client request for certificate -----------");
                 String request = inputReader.readLine();
                 System.out.println(request);
                 if (request.equals("Request certificate...")){
-                    System.out.println("Client: " + request);
+                    System.out.println("---------------  STEP3 COMPLETE ---------------------------");
 
                     // Send certificate to client
-                    System.out.println("Sending certificate to client...");
+                    System.out.println("STEP4: --------- Sending certificate to client -----------------");
                     toClient.write(serverProtocol.getCertificate());
                     toClient.flush();
+                    System.out.println("---------------  STEP4 COMPLETE ---------------------------");
                     break;
                 }
                 else
@@ -106,10 +105,10 @@ public class ServerCP1 {
                     System.out.println("Receiving file...");
 
                     int numBytes = fromClient.readInt();
-                    byte [] filename = new byte[numBytes];
-                    fromClient.read(filename);
-
-                    fileOutputStream = new FileOutputStream(OUTPUT_FOLDER + new String(filename, 0, numBytes));
+                    byte [] filepath = new byte[numBytes];
+                    fromClient.read(filepath);
+                    String FILENPATH = new String(filepath, 0, numBytes);
+                    fileOutputStream = new FileOutputStream(OUTPUT_FOLDER + "CP_2" + getFileNameFromFilePath(FILENPATH));
                     bufferedFileOutputStream = new BufferedOutputStream(fileOutputStream);
 
                     // If the packet is for transferring a chunk of the file
@@ -147,5 +146,18 @@ public class ServerCP1 {
 
         } catch (Exception e) {e.printStackTrace();}
 
+    }
+
+    static private String getMessageFromClient(int length) throws IOException{
+        byte[] temp = new byte[length];
+        fromClient.readFully(temp);
+        String message = new String(temp);
+        return message;
+    }
+
+    static private String getFileNameFromFilePath(String filepath) {
+        String[] FILENAMES = filepath.split("/");
+        String FILENAME = FILENAMES[FILENAMES.length-1];
+        return FILENAME;
     }
 }
