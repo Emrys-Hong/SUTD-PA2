@@ -20,7 +20,7 @@ public class ClientCP1 {
 
 
         /*****************CHANGE THESE VARIABLES****************/
-        String filename = "/Users/emrys/Github/school/PA2-SUTD/input/smallest.txt";
+        String filename = "/Users/emrys/Github/school/PA2-SUTD/input/smaller.txt";
         String serverIP = "localhost";
         int serverPort = 4321;
         String CACERT = "/Users/emrys/Github/school/PA2-SUTD/keys/cacse.crt";
@@ -109,16 +109,19 @@ public class ClientCP1 {
             toServer.writeInt(fileSize);
             toServer.flush();
 
+            System.out.println("**************** file size: " + fileSize + "byte *******************");
+
             // Send the filename
+            System.out.println("----------- sending filename -------------");
             toServer.writeInt(0);
             toServer.writeInt(filename.getBytes().length);
             toServer.write(filename.getBytes());
             toServer.flush();
-
+            System.out.println("------------- filename sent ---------------");
             byte [] fromFileBuffer = new byte[117];
 
-            int count = 0;
             // Send the encrypted file
+            System.out.println("----------- file transfer begin ------------");
             for (boolean fileEnded = false; !fileEnded;) {
 
                 // Read 117 bytes
@@ -126,7 +129,6 @@ public class ClientCP1 {
 
                 // Encrypt 117 bytes
                 byte[] encryptedfromFileBuffer = clientProtocol.encryptFile(fromFileBuffer);
-                count++;
                 fileEnded = numBytes < fromFileBuffer.length;
                 int encryptedNumBytes = encryptedfromFileBuffer.length;
 
@@ -136,7 +138,7 @@ public class ClientCP1 {
                 toServer.write(encryptedfromFileBuffer);
                 toServer.flush();
             }
-
+            System.out.println("------------- file transfer end ----------------");
             // Receives end signal from server
             while (true){
                 String end = in.readLine();
@@ -148,7 +150,7 @@ public class ClientCP1 {
                     System.out.println("End request failed...");
             }
 
-            System.out.println("Closing connection...");
+            System.out.println("------------ Closing connection -------------");
             bufferedFileInputStream.close();
             fileInputStream.close();
 
@@ -156,6 +158,7 @@ public class ClientCP1 {
 
         long timeTaken = System.nanoTime() - timeStarted;
         double millis = timeTaken/1000000.0;
+
         System.out.println("Program took: " + millis + "ms to run");
     }
 }

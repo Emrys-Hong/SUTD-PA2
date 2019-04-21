@@ -92,8 +92,7 @@ public class ServerCP1 {
             // Get file size from client
             int fileSize = fromClient.readInt();
             int size = 0;
-
-            int count = 0;
+            System.out.println("----------- receiving file --------------");
             while (size < fileSize) {
 
                 int packetType = fromClient.readInt();
@@ -101,7 +100,7 @@ public class ServerCP1 {
                 // If the packet is for transferring the filename
                 if (packetType == 0) {
 
-                    System.out.println("Receiving file...");
+                    System.out.println("----------- Receiving filename ----------");
 
                     int numBytes = fromClient.readInt();
                     byte [] filepath = new byte[numBytes];
@@ -109,10 +108,9 @@ public class ServerCP1 {
                     String FILENPATH = new String(filepath, 0, numBytes);
                     fileOutputStream = new FileOutputStream(OUTPUT_FOLDER + "CP_2" + getFileNameFromFilePath(FILENPATH));
                     bufferedFileOutputStream = new BufferedOutputStream(fileOutputStream);
-
+                    System.out.println("--------- filename received --------------");
                     // If the packet is for transferring a chunk of the file
                 } else if (packetType == 1) {
-                    count++;
                     int numBytes = fromClient.readInt();
                     int decryptedNumBytes = fromClient.readInt();
                     size+=decryptedNumBytes;
@@ -129,7 +127,7 @@ public class ServerCP1 {
                     }
                 }
             }
-
+            System.out.println("------------- file received ---------------");
             // Indicate end of transfer to client
             System.out.println("---------- Transfer finished ---------------");
             out.println("Ending transfer...");
