@@ -87,11 +87,10 @@ public class ServerCP1 {
             System.out.println("Client: " + inputReader.readLine());
 
             // Starts file transfer
-            System.out.println("AP completes. Receiving file...");
+            System.out.println("----------- CONGRATULATIONS YOU ARE VERIFIED ---------------");
 
             // Get file size from client
             int fileSize = fromClient.readInt();
-            System.out.println(fileSize);
             int size = 0;
 
             int count = 0;
@@ -132,11 +131,11 @@ public class ServerCP1 {
             }
 
             // Indicate end of transfer to client
-            System.out.println("Transfer finished");
+            System.out.println("---------- Transfer finished ---------------");
             out.println("Ending transfer...");
 
             // Close connection
-            System.out.println("Closing connection...");
+            System.out.println("------------- Closing connection ---------------");
             bufferedFileOutputStream.close();
             fileOutputStream.close();
 

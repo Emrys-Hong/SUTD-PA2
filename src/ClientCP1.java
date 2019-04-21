@@ -60,21 +60,24 @@ public class ClientCP1 {
             System.out.println("--------------- STEP1 COMPLETE -----------------");
 
             // Retrieve encrypted nonce from server
+            System.out.println("STEP2: ------- retriving encrypted nonce from server ---------");
             fromServer.read(clientProtocol.getEncryptedNonce());
             System.out.println("Retrieved encrypted nonce from server...");
+            System.out.println("------------ STEP 2 COMPLETE -----------------------");
 
             // Send certificate request to server
-            System.out.println("Requesting certificate from server...");
+            System.out.println("STEP3: --------- Requesting certificate from server ------------");
             out.println("Request certificate...");
-
-
             clientProtocol.getCertificate(fromServer);
+            System.out.println("---------------- STEP 3 COMPLETE -------------------------");
+
+            System.out.println("STEP 4: --------- check certificate, check nonce ------------");
             System.out.println("Validating certificate...");
             clientProtocol.verifyCert();
             System.out.println("Certificate validated");
 
 
-            System.out.println("Verifying server...");
+            System.out.println("Verifying nonce...");
             // Get public key
             clientProtocol.getPublicKey();
 
@@ -92,7 +95,8 @@ public class ClientCP1 {
                 clientSocket.close();
             }
 
-            System.out.println("AP completes. Sending file...");
+            System.out.println("-------------- STEP 4 COMPLETE ---------------- ");
+            System.out.println("-------------- SERVER IS VERIFIED ----------------");
 
             // Open the file
             fileInputStream = new FileInputStream(filename);
