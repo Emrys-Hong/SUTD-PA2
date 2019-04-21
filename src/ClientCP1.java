@@ -44,7 +44,6 @@ public class ClientCP1 {
             ClientProtocol clientProtocol = new ClientProtocol(CACERT);
 
             System.out.println("STEP0: ---------- request authentication ---------------");
-//            toServer.write("Requesting authentication...".getBytes());
             toServer.write("1".getBytes());
             toServer.flush();
             System.out.println("Requesting authentication...");

@@ -106,7 +106,7 @@ public class ServerCP1 {
                     byte [] filepath = new byte[numBytes];
                     fromClient.read(filepath);
                     String FILENPATH = new String(filepath, 0, numBytes);
-                    fileOutputStream = new FileOutputStream(OUTPUT_FOLDER + "CP_2" + getFileNameFromFilePath(FILENPATH));
+                    fileOutputStream = new FileOutputStream(OUTPUT_FOLDER + "CP_1_" + getFileNameFromFilePath(FILENPATH));
                     bufferedFileOutputStream = new BufferedOutputStream(fileOutputStream);
                     System.out.println("--------- filename received --------------");
                     // If the packet is for transferring a chunk of the file
