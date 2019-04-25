@@ -20,7 +20,7 @@ public class ClientCP1 {
 
 
         /*****************CHANGE THESE VARIABLES****************/
-        String filename = "/Users/emrys/Github/school/PA2-SUTD/input/smaller.txt";
+        String filename = "/Users/emrys/Github/school/PA2-SUTD/input/class-AudioClip.html";
         String serverIP = "localhost";
         int serverPort = 4321;
         String CACERT = "/Users/emrys/Github/school/PA2-SUTD/keys/cacse.crt";
