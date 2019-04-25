@@ -33,10 +33,12 @@ Upon a successful execution, the client will close its connection to the server 
 
 ## Results
 
-![Plot](images/plot.png)
+![Plot](images/plot.jpg)
 
 It is clear that the AES encryption standard is much quicker than using RSA for file transfer.
 
+The data is plotted as following:
+![data](images/data.png)
 ## Conclusion
 
 We use public key authentication to perform a handshake between the client and server for file transfer. Additionally, we allow the server and client to specify the encryption policy used (public key encryption, or symmetric key encryption with AES). We benchmark the speed of both policies and conclude that symmetric key encryption is significantly faster.
